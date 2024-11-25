@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Image, Button, TextInput, Alert, StyleSheet, TouchableOpacity } from 'react-native';
 import axios from 'axios';
-import * as ImagePicker from '@react-native-image-picker/image-picker';
+import { AppContext } from "../../scripts/AppContext";
+import * as ImagePicker from 'expo-image-picker';    //npm install expo-image-picker
+import { router } from "expo-router";
 
 const ProfileScreen = ({ navigation }) => {
   const [user, setUser] = useState({

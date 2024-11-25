@@ -1,14 +1,48 @@
 import { User } from "../db.js";
+import bcryptjs from "bcryptjs";
 
-const pegar_usuario_funcao = async (req, res) => {
-    const id_requisicao = req.params.id
-    const user = await User.findByPk(id_requisicao)
+const get_user = async (req, res) => {
+    const id_req = req.params.id
+    const user = await User.findOne({ where: { id: id_req } })
     if (!user) {
-        res.status(404).send('Usuário não encontrado')
+        res.status(404).send("Usuário não encontrado")
         return
     }
-    res.status(200).send(`Usuário encontrado! \n Nome: ${user.nome} \n Sobrenome: ${user.sobrenome}\n Email: ${user.email} \n Data de nascimento: ${user.dataNascimento}`)
+    res.status(200).send({id: user.id, nome: user.nome, sobrenome: user.sobrenome, email: user.email, dataNascimento: user.dataNascimento, profile_image: user.profile_image})
     return
+
 }
 
-export default {pegar_usuario_funcao}
+const save_user_image = async(req, res)=>{
+    const id_req = req.params.id
+    const user = await User.findOne({ where: { id: id_req } })
+
+    if (!user) {
+        res.status(404).send("Usuário não encontrado")
+        return
+    }
+
+    user.profile_image = req.body.profile_image
+    await user.save()
+}
+
+const change_user_password = async(req, res) => {
+    const id_req = req.params.id
+    const user = await User.findOne({ where: { id: id_req } })
+    
+
+    if (!user) {
+        res.status(404).send("Usuário não encontrado")
+        return
+    }
+
+    const novaSenha = req.body.novaSenha
+
+    const novaSenhaCriptografada = bcryptjs.hashSync(novaSenha, 10)
+
+    user.senha = novaSenhaCriptografada
+    await user.save()
+    res.status(200).send("Senha correta")
+    return
+}
+export default { get_user, save_user_image, change_user_password}
