@@ -1,8 +1,11 @@
-import express from 'express'
-import { pegar_usuario_funcao } from '../controlador/controlador_usuario'
+import express from 'express';
+const routes_user = express.Router(); 
+import controller_user from '../controlador/controlador_usuario.js';
 
-const rotas_usuarios = express.Router()
 
-rotas_usuarios.get('/:id', pegar_usuario_funcao)
+routes_user.get('/get_user/:id', controller_user.get_user)
+routes_user.post('/save_user_image/:id', controller_user.save_user_image)
+routes_user.post('/change_user_password/:id', controller_user.change_user_password)
 
-export {rotas_usuarios}
+
+export default routes_user //Exporta a rota

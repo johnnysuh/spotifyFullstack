@@ -1,10 +1,10 @@
-import express from 'express'
-import { login_funcao, registro_funcao } from '../controlador/controlador_autenticacao'
+import express from 'express';
+const routes_auth = express.Router(); 
+import controlador from '../controlador/controlador_autenticacao.js';
 
-const rotas_autenticacao = express.Router()
 
-rotas_autenticacao.post('/registro', registro_funcao)
+routes_auth.post('/register', controlador.criarUsuario)
 
-rotas_autenticacao.post('/login', login_funcao)
+routes_auth.post('/login', controlador.login)
 
-export { rotas_autenticacao }
+export default routes_auth //Exporta a rota
