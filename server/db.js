@@ -1,17 +1,15 @@
-import Sequelize from 'sequelize';
+import {Sequelize, DataTypes} from 'sequelize' //npm i sequelize pg pg-hstore
 
 const sequelize = new Sequelize(
-    'spotfake',
-    'postgres',
-    'postgres',
+    'echo', 
+    'postgres', 
+    'postgres', 
     {
         host: 'localhost',
         port: 5432,
-        dialect: 'postgres',
+        dialect: 'postgres'
     }
-);
-
-// Modelo de Usuário
+)
 const User = sequelize.define('user', {
     nome: {
         type: Sequelize.DataTypes.STRING,
@@ -24,11 +22,11 @@ const User = sequelize.define('user', {
     email: {
         type: Sequelize.DataTypes.STRING,
         allowNull: false,
-        unique: true,
+        unique: true
     },
     dataNascimento: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
     senha: {
         type: Sequelize.DataTypes.STRING,
@@ -37,75 +35,68 @@ const User = sequelize.define('user', {
     status: {
         type: Sequelize.DataTypes.ENUM('ativo', 'inativo'),
         allowNull: false,
-        defaultValue: 'inativo',
+        defaultValue: 'inativo'
     },
-});
-
-// Modelo de Artista
-const Artista = sequelize.define('artista', {
-    nome: {
+    profile_image: {
         type: Sequelize.DataTypes.STRING,
-        allowNull: false,
-    },
-    descricao: {
-        type: Sequelize.DataTypes.TEXT,
-        allowNull: true,
-    },
-});
+        allowNull: true
+    }
+}, {freezeTableName: true})
 
-// Modelo de Álbum
-const Album = sequelize.define('album', {
-    nome: {
-        type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+const Playlist = sequelize.define('Playlist', {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-    descricao: {
-        type: Sequelize.DataTypes.TEXT,
-        allowNull: true,
+    description: {
+      type: DataTypes.TEXT,
     },
-});
-
-// Modelo de Música
-const Musica = sequelize.define('musica', {
-    nome: {
-        type: Sequelize.DataTypes.STRING,
-        allowNull: false,
+    cover: {
+      type: DataTypes.STRING, // URL da capa
     },
-    duracao: {
-        type: Sequelize.DataTypes.INTEGER, // duração em segundos
-        allowNull: false,
+  });
+  
+  const Artist = sequelize.define('Artist', {
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
     },
-});
+    image: {
+      type: DataTypes.STRING, // URL da imagem do artista
+    },
+  });
+  
+ 
+  const Song = sequelize.define('Song', {
+    title: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    duration: {
+      type: DataTypes.STRING, // Formato: "3:45"
+    },
+    albumCover: {
+      type: DataTypes.STRING, // URL da capa do álbum
+    },
+  });
+  
+  // Relacionamentos
+  Playlist.hasMany(Song); // Uma playlist tem várias músicas
+  Song.belongsTo(Playlist);
+  
+  Artist.hasMany(Song); // Um artista pode ter várias músicas
+  Song.belongsTo(Artist);
 
-// **Definição de Relacionamentos**
-// Cada Álbum pertence a um Artista
-Album.belongsTo(Artista, { foreignKey: 'artistaId', onDelete: 'CASCADE' });
-Artista.hasMany(Album, { foreignKey: 'artistaId' });
-
-// Cada Música pertence a um Álbum
-Musica.belongsTo(Album, { foreignKey: 'albumId', onDelete: 'CASCADE' });
-Album.hasMany(Musica, { foreignKey: 'albumId' });
-
-// Função para criar tabelas e autenticar a conexão
 const criarTabelas = () => {
-    sequelize
-        .authenticate()
-        .then(() => {
-            console.log('Conexão bem-sucedida com o banco de dados');
-        })
+    sequelize.authenticate().then(() => {
+        console.log('conectou')
+    })
         .catch((err) => {
-            console.error('Erro ao conectar ao banco de dados:', err);
-        });
-
-    sequelize
-        .sync({ force: true }) // Remova `{ force: true }` em produção para evitar a exclusão de tabelas
-        .then(() => {
-            console.log('Tabelas sincronizadas');
+            console.log(err)
         })
-        .catch((err) => {
-            console.error('Erro ao sincronizar tabelas:', err);
-        });
-};
+    sequelize.sync({ force: true }).then(() => { //sincroniza o banco de dados, mas para um banco real são necessárias formas de verificar as tabelas antes
+        console.log('tabela criada')
+    })
+}
 
-// Exportando os modelos e a função de inicialização
-export { User, Artista, Album, Musica, sequelize, criarTabelas };
+export { User, Playlist, Artist, Song, sequelize, criarTabelas };

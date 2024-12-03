@@ -1,200 +1,138 @@
-import { FlatList, ScrollView, StyleSheet, Text, View, Image, Pressable } from "react-native";
-import BottomBar from "../../components/bottomBar";
-import TopBar from "../../components/topBar";
-import { useEffect, useState } from "react";
-import { useRouter } from "expo-router";
+import React from "react";
+import { Text, View, StyleSheet, Image, FlatList, Pressable, ScrollView } from "react-native";
+import { Link } from "@react-navigation/native"; // Certifique-se de usar react-navigation
 
-const Home = () => {
-    const [albuns, setAlbuns] = useState([]);
-    const [maisVistos, setMaisVistos] = useState([]);
-    const [artistasAlbum, setArtistasAlbum] = useState({});
-    const [artistas, setArtistas] = useState([]);
-    const [sections, setSections] = useState([]);
-    const router = useRouter();
+const playlists = [
+  { id: 1, title: "Top Hits", imageUrl: "https://i.pinimg.com/736x/9f/ab/1b/9fab1b3a77c165e340a360f9f858ca27.jpg" },
+  { id: 2, title: "Chill Vibes", imageUrl: "https://i.pinimg.com/736x/1e/5f/77/1e5f77a5b721c93418305a84b3e98abe.jpg" },
+  { id: 3, title: "Workout", imageUrl: "https://i.pinimg.com/736x/dc/d1/5a/dcd15a285e2bfa29f276b4528df8701f.jpg" },
+  { id: 4, title: "Party Mix", imageUrl: "https://i.pinimg.com/736x/46/6a/99/466a997735c4bdaa5914af6b88891275.jpg" },
+];
 
-    useEffect(() => {
-        fetch('http://localhost:000/album/')
-            .then((resposta) => resposta.json())
-            .then((dados) => {
-                setAlbuns(dados);
-                shuffleArray(dados);
-                fetchArtistas(dados);
-            })
-            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
-    }, []);
+const Artistas = [
+  { id: 5, title: "Kendrick Lamar", imageUrl: "https://i.scdn.co/image/ab6761610000e5eb437b9e2a82505b3d93ff1022" },
+  { id: 6, title: "Beyoncé", imageUrl: "https://i.scdn.co/image/ab67616d00001e02f5220893852002a2a3078bab" },
+  { id: 7, title: "Linkin Park", imageUrl: "https://i0.wp.com/ovicio.com.br/wp-content/uploads/2024/09/20240905-ovicio-linkin-park.webp?resize=555%2C555&ssl=1" },
+  { id: 8, title: "Charli xcx", imageUrl: "https://i.scdn.co/image/ab6761610000e5eb936885667ef44c306483c838" },
+];
 
-    useEffect(() => {
-        fetch('http://localhost:8000/artista/')
-            .then((resposta) => resposta.json())
-            .then((dados) => {
-                setArtistas(dados);
-            })
-            .catch(() => console.log('Aconteceu um erro ao buscar os dados.'));
-    }, []);
+const Álbuns = [
+  { id: 9, title: "gnx", imageUrl: "https://i.scdn.co/image/ab67616d0000b273d9985092cd88bffd97653b58" },
+  { id: 10, title: "COWBOY CARTER", imageUrl: "https://i.scdn.co/image/ab67616d0000b2731572698fff8a1db257a53599" },
+  { id: 11, title: "From Zero", imageUrl: "https://i.scdn.co/image/ab67616d0000b273b11a5489e8cb11dd22b930a0" },
+  { id: 12, title: "brat", imageUrl: "https://i.scdn.co/image/ab67616d0000b27388e3822cccfb8f2832c70c2e" },
+];
 
-    const shuffleArray = (array) => {
-        const dadosEmbaralhados = [...array];
-        dadosEmbaralhados.sort(() => Math.random() - 0.5);
-        setMaisVistos(dadosEmbaralhados);
-    };
+const Músicas = [
+  { id: 13, title: "HOWLING", imageUrl: "https://i.scdn.co/image/ab67616d00001e02f3e7b35d19758748f642299f" },
+  { id: 14, title: "fue mejor (feat. SZA)", imageUrl: "https://i.scdn.co/image/ab67616d0000b273e08b58aa5d1e7ba01bc45c53" },
+  { id: 15, title: "Ex-Factor", imageUrl: "https://i.scdn.co/image/ab67616d0000b273e08b1250db5f75643f1508c9" },
+  { id: 16, title: "Hit Me Where It Hurts", imageUrl: "https://i.scdn.co/image/ab67616d0000b2737d983e7bf67c2806218c2759" },
+];
 
-    const fetchArtistas = (albuns) => {
-        const artistasIds = albuns.map(album => album.artista_id);
-
-        artistasIds.forEach(id => {
-            fetch(`http://localhost:8000/artista/${id}`)
-                .then((res) => res.json())
-                .then((artista) => {
-                    setArtistasAlbum(prevState => ({
-                        ...prevState,
-                        [id]: artista.nome,
-                    }));
-                })
-                .catch(() => console.log('Erro ao buscar o artista.'));
-        });
-    };
-
-    useEffect(() => {
-        setSections([
-            {
-                title: 'Recomendados',
-                data: albuns.slice(0, 5), 
-                type: 'album',
-            },
-            {
-                title: 'Álbuns Mais Ouvidos',
-                data: maisVistos.slice(0, 6), 
-                type: 'album',
-            },
-            {
-                title: 'Artistas Favoritos',
-                data: artistas, 
-                type: 'artista',
-            },
-        ]);
-    }, [albuns, maisVistos, artistas]);
-
-    const renderAlbumItem = (item) => (
-        <Pressable
-            style={styles.itemContainer}
-            onPress={() => router.push(`/album/${item.id}`)} 
-        >
-            <Image
-                style={[styles.img, { borderRadius: 4 }]}
-                source={{ uri: item.coverImageUrl }}
-            />
-            <View style={styles.itemContainer}>
-                <Text style={styles.album}>{item.title}</Text>
-                {artistasAlbum[item.artista_id] && (
-                    <Text style={styles.autor}>
-                        {artistasAlbum[item.artista_id]}
-                    </Text>
-                )}
-            </View>
+const TelaHome = () => {
+  const renderPlaylist = (data, isArtist = false) => (
+    <FlatList
+      data={data}
+      horizontal
+      contentContainerStyle={{ alignItems: "flex-start" }}
+      renderItem={({ item }) => (
+        <Pressable style={styles.itemCard}>
+          <Image
+            style={[styles.itemImage, isArtist && styles.artistImage]}
+            source={{ uri: item.imageUrl }}
+            resizeMode="contain"
+          />
+          <Text style={styles.itemText}>{item.title}</Text>
         </Pressable>
-    );
+      )}
+      keyExtractor={(item) => item.id.toString()}
+      showsHorizontalScrollIndicator={false}
+    />
+  );
 
-    const renderArtistItem = (item) => (
-        <Pressable
-            style={styles.itemContainer}
-            onPress={() => router.push(`/artista/${item.id}`)}
-        >
-            <Image
-                style={[styles.img, { borderRadius: 80 }]}
-                source={{ uri: item.imageUrl }}
-            />
-            <View style={styles.itemContainer}>
-                <Text style={styles.artista}>{item.nome}</Text>
-            </View>
-        </Pressable>
-    );
+  return (
+    <ScrollView style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>Bem-vindo ao echo</Text>
+        <Link to="/telaPerfil" style={styles.profileLink}>
+          <Text style={styles.profileText}>Perfil</Text>
+        </Link>
+      </View>
 
-    return (
-        <View style={styles.container}>
-            <TopBar title={'Spotifake'} icon={null} />
-            <ScrollView style={styles.feed} showsVerticalScrollIndicator={false}>
-                {sections.map((section) => (
-                    <View key={section.title} style={styles.sectionContainer}>
-                        <Text style={styles.header}>{section.title}</Text>
-                        <FlatList
-                            data={section.data}
-                            horizontal
-                            keyExtractor={(item, index) => item.id ? item.id.toString() : index.toString()}
-                            renderItem={({ item }) => {
-                                return section.type === 'album' 
-                                    ? renderAlbumItem(item) 
-                                    : renderArtistItem(item); 
-                            }}
-                            showsHorizontalScrollIndicator={false}
-                            contentContainerStyle={styles.row}
-                        />
-                    </View>
-                ))}
-            </ScrollView>
-            <BottomBar />
-        </View>
-    );
+      <Text style={styles.sectionTitle}>Músicas</Text>
+      {renderPlaylist(Músicas)}
+
+      <Text style={styles.sectionTitle}>Artistas</Text>
+      {renderPlaylist(Artistas, true)}
+
+      <Text style={styles.sectionTitle}>Álbuns</Text>
+      {renderPlaylist(Álbuns)}
+
+      <Text style={styles.sectionTitle}>Playlists</Text>
+      {renderPlaylist(playlists)}
+    </ScrollView>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#121212',
-    },
-    sectionContainer: {
-        marginVertical: 10,
-    },
-    feed: {
-        marginTop: 70,
-        paddingBottom: 80
-    },
-    row: {
-        paddingHorizontal: 20,
-        gap: 10,
-    },
-    img: {
-        width: 130,
-        height: 130,
-        marginBottom: 4
-    },
-    itemContainer: {
-        alignItems: 'center',
-        width: 130,
-        borderRadius: 8,
-    },
-    itemText: {
-        color: '#FFFFFF',
-    },
-    header: {
-        fontSize: 20,
-        fontWeight: 'bold',
-        color: '#FFFFFF',
-        paddingVertical: 8,
-        paddingHorizontal: 10,
-    },
-    album: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 13,
-        height: 20,
-        width:'100%',
-        textAlign: 'left'
-    },
-    artista: {
-        color: 'white',
-        fontWeight: 'bold',
-        fontSize: 13,
-        height: 20,
-        width:'100%',
-        textAlign: 'center'
-    },
-    autor: {
-        color: "rgba(255,255,255,0.8)",
-        fontSize: 12,
-        textAlign: 'left',
-        marginBottom: 6,
-        width:'100%'
-    },
+  container: {
+    backgroundColor: "#0b071b",
+    flex: 1,
+    paddingTop: 50,
+    paddingHorizontal: 20,
+  },
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+    marginTop: -30,
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#5732f1",
+  },
+  profileLink: {
+    backgroundColor: "#5732f1",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
+    borderRadius: 10,
+    width: 80,
+  },
+  profileText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 10,
+  },
+  itemCard: {
+    marginRight: 15,
+    alignItems: "center",
+    justifyContent: "flex-start",
+    width: 120,
+  },
+  itemImage: {
+    width: "90%",
+    height: undefined,
+    aspectRatio: 1,
+    borderRadius: 5,
+  },
+  artistImage: {
+    borderRadius: 60,
+  },
+  itemText: {
+    color: "#fff",
+    marginTop: 5,
+    textAlign: "center",
+    marginBottom: 10,
+  },
 });
 
-export default Home;
+export default TelaHome;

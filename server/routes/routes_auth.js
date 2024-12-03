@@ -1,6 +1,6 @@
 import express from 'express';
 const routes_auth = express.Router(); 
-import controlador from '../controlador/controlador_autenticacao.js';
+import controlador from '../controllers/controlador_autenticacao.js';
 
 
 routes_auth.post('/register', controlador.criarUsuario)
