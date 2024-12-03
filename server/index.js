@@ -7,7 +7,7 @@ import { criarTabelas } from "./db.js";
 const app = Express();
 app.use(Express.json());
 app.use(cors());
-//criarTabelas();
+criarTabelas();
 
 app.use("/auth", routes_auth);
 app.use("/user", routes_user);

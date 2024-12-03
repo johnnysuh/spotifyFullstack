@@ -1,7 +1,7 @@
 import {Sequelize, DataTypes} from 'sequelize' //npm i sequelize pg pg-hstore
 
 const sequelize = new Sequelize(
-    'echo', 
+    'spotifake', 
     'postgres', 
     'postgres', 
     {
