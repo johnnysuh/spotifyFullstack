@@ -68,11 +68,11 @@ export default TelaPerfil = () => {
                 <Text style={styles.backText}>voltar</Text>
             </Pressable>
 
-            <View style={styles.perfil}>
-                <Pressable onPress={pickImage} style={styles.imagemBotao}>
+            <View style={styles.profile}>
+                <Pressable onPress={pickImage} style={styles.buttonImage}>
                     <Image source={{ uri: user.profile_image }} style={{ height: 100, width: 100, borderRadius: 50 }} />
                 </Pressable>
-                <View style={styles.user_info}>
+                <View style={styles.userInfo}>
                     <Text style={styles.user_nome}>{user.nome} {user.sobrenome}</Text>
                     <Text style={styles.user_email}>{user.email}</Text>
                     <Text style={styles.data_nasc}>{user.dataNascimento}</Text>
@@ -100,13 +100,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         height: '100%',
         justifyContent: 'space-around',
-        backgroundColor: '#0b071b',
+        backgroundColor: '#F6F6F6',
     },
     backButton: {
         position: "absolute",
         top: 20,
         left: 10,
-        backgroundColor: "#5732f1",
+        backgroundColor: "#4380CF",
         padding: 10,
         borderRadius: 5,
     },
@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     button: {
-        backgroundColor: '#5732f1',
+        backgroundColor: '#4380CF',
         width: 200,
         height: 40,
         display: 'flex',
@@ -124,22 +124,29 @@ const styles = StyleSheet.create({
         marginTop: 30,
         marginBottom: -10
     },
-    perfil: {
-        backgroundColor: '#100A2A',
+    profile: {
+        backgroundColor: '#F6F6F6',
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         height: 360,
-        width: 300,
+        width: 600,
         borderRadius: 10,
         marginTop: 60,
+        borderWidth: 2,
+        borderColor: '#d9d9d9',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 5, 
     },
-    imagemBotao: {
+    buttonImage: {
         backgroundColor: '#ffffff',
         borderRadius: 50,
         marginTop: 20
     },
-    user_info: {
+    userInfo: {
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
@@ -148,22 +155,22 @@ const styles = StyleSheet.create({
     },
 
     user_nome: {
-        color: '#ffffff',
+        color: '#6c757d',
         width: 300,
         textAlign: 'center',
     },
     user_email: {
-        color: '#ffffff',
+        color: '#6c757d',
         width: 300,
         textAlign: 'center',
     },
     data_nasc: {
-        color: '#ffffff',
+        color: '#6c757d',
         width: 300,
         textAlign: 'center',
     },
     user_bio: {
-        color: '#ffffff',
+        color: '#6c757d',
         width: 300,
         textAlign: 'center',
         marginTop: 10,

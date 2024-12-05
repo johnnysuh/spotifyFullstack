@@ -30,11 +30,10 @@ const styles = StyleSheet.create({
         alignItems: "flex-start",
     },
     inputComponent: {
-        width: '80%',
+        width: '75%',
         borderWidth: 0,
         outlineWidth: 0
     },
-
     input: {
         display: 'flex',
         flexDirection: 'row',
@@ -42,14 +41,17 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-around',
         backgroundColor: '#fafafa',
-        borderColor: "#afafaf",
-        borderWidth: 1,
         height: 40,
         borderRadius: 5,
-        marginTop: 10
+        marginTop: 10,
+        shadowColor: '#6c757d',
+        shadowOffset: { width: -1, height: -1 }, // Sombra para simular luz superior
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+        elevation: 3
     },
     label: {
-        color: '#FFFFFF',
+        color: '#6c757d',
         marginTop: 7
     }
 })

@@ -14,7 +14,7 @@ const AdBio = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() =>  router.replace("/telaPerfil")} style={styles.backButton}>
+            <Pressable onPress={() => router.replace("/telaPerfil")} style={styles.backButton}>
                 <Text style={styles.backText}>voltar</Text>
             </Pressable>
 
@@ -37,7 +37,7 @@ const AdBio = () => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#0b071b",
+        backgroundColor: "#F6F6F6", // Cor de fundo ajustada para combinar com a tela anterior
         justifyContent: "center",
         alignItems: "center",
     },
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
         position: "absolute",
         top: 20,
         left: 10,
-        backgroundColor: "#5732f1",
+        backgroundColor: "#4380CF", // Cor do botão de voltar
         padding: 10,
         borderRadius: 5,
     },
@@ -53,11 +53,18 @@ const styles = StyleSheet.create({
         color: "#fff",
     },
     bioContainer: {
-        backgroundColor: "#100A2A",
+        backgroundColor: "#F6F6F6", // Fundo do container ajustado
         padding: 20,
         borderRadius: 10,
-        width: "40%",
+        width: "80%", // Largura maior para se alinhar com o estilo
         alignItems: "center",
+        borderWidth: 2,
+        borderColor: "#d9d9d9", // Cor da borda
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.1,
+        shadowRadius: 6,
+        elevation: 5, // Adicionando sombra semelhante à da tela anterior
     },
     bioInput: {
         backgroundColor: "#fff",
@@ -68,9 +75,11 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         textAlignVertical: "top",
+        borderColor: "#d9d9d9",
+        borderWidth: 1,
     },
     saveButton: {
-        backgroundColor: "#5732f1",
+        backgroundColor: "#4380CF", // Cor do botão ajustada para ser consistente
         width: 200,
         padding: 10,
         borderRadius: 5,

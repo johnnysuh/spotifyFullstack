@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Text, TextInput, View, StyleSheet, Image, Pressable } from "react-native";
-import InputPlace from "./inputPlace/InputPlace";
+import InputPlace from "..inputPlace/inputPlace/InputPlace";
 import { router } from "expo-router"; // Importação do router
 
 export default TelaCadastro = () => {
@@ -38,8 +38,8 @@ export default TelaCadastro = () => {
 
     return (
         <View style={styles.container}>
-            <Pressable onPress={() => router.back()} style={styles.botao_voltar}>
-                <Text style={styles.texto_voltar}>Voltar</Text>
+            <Pressable onPress={() => router.back()} style={styles.backButton}>
+                <Text style={styles.textBack}>Voltar</Text>
             </Pressable>
 
             <Text style={styles.title}>Crie sua conta</Text>
@@ -58,33 +58,33 @@ export default TelaCadastro = () => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: "#0b071b",
+        backgroundColor: "#F6F6F6",
         width: '100%',
         height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         gap: 50,
-        color: "#5732f1"
+        color: "#343434"
     },
     title: {
         fontSize: 40,
         fontWeight: 'bold',
-        color: "#5732f1"
+        color: "#4380CF"
     },
-    botao_voltar: {
+    backButton: {
         position: "absolute",
         top: 20,
         left: 10,
-        backgroundColor: "#5732f1",
+        backgroundColor: "#4380CF",
         padding: 10,
         borderRadius: 5,
     },
-    texto_voltar: {
+    textBack: {
         color: "#fff",
     },
     button: {
-        backgroundColor: '#5732f1',
+        backgroundColor: '#4380CF',
         width: 250,
         height: 40,
         display: 'flex',
